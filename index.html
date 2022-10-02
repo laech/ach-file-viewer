@@ -71,6 +71,10 @@
       padding-left: 30pt;
     }
 
+    div.line.file-padding {
+      opacity: 0.3;
+    }
+
     .space {
       position: relative;
     }
@@ -152,7 +156,18 @@
     }
 
     function parseFileTrailerRecord(state, line) {
-      return line.charAt(0) !== '9' ? null : {
+      if (line.charAt(0) !== '9') {
+        return null;
+      }
+      if (line.match(/^9+$/)) {
+        return {
+          type: "file-padding",
+          fields: [
+            { value: line, title: "File Padding" }
+          ]
+        };
+      }
+      return {
         type: "file-trailer",
         fields: [
           { value: line.substring(0, 1), title: "Record Type Code" },
