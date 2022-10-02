@@ -2,19 +2,19 @@
 <html>
 
 <head>
-  <title>ACH File</title>
+  <title>ACH File Viewer</title>
   <style>
-    body,
-    #content,
-    #viewer {
+    body {
       width: fit-content;
-      margin: 10pt auto;
+      margin: 0 auto;
     }
 
-    #content {
-      width: 100%;
+    #editor-container,
+    #viewer-container {
+      margin: 20pt;
     }
 
+    #editor,
     #viewer {
       font-family: monospace;
     }
@@ -91,10 +91,12 @@
 </head>
 
 <body>
-  <div>
-    <textarea id="content" cols="94" rows="10" placeholder="ACH file content"></textarea>
+  <div id="editor-container">
+    <textarea id="editor" cols="94" rows="10" placeholder="ACH file content"></textarea>
   </div>
-  <div id="viewer"></div>
+  <div id="viewer-container">
+    <div id="viewer"></div>
+  </div>
 
   <script>
 
@@ -130,7 +132,7 @@
 
     function formatRecord(record) {
       return record.fields
-        .map(field => `<pre class="${field.type}" title="${field.title}">${field.value.replaceAll(" ", "<span class='space'> </span>")}</pre>`)
+        .map(field => `<pre title="${field.title}">${field.value.replaceAll(" ", "<span class='space'> </span>")}</pre>`)
         .join("");
     }
 
@@ -297,11 +299,11 @@
     }
 
     const viewer = document.getElementById("viewer");
-    const content = document.getElementById("content");
-    content.addEventListener("input", (event) => {
+    const editor = document.getElementById("editor");
+    editor.addEventListener("input", (event) => {
       process(event.target.value);
     });
-    process(content.value);
+    process(editor.value);
 
   </script>
 </body>
